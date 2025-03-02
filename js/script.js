@@ -7,6 +7,8 @@ const list = document.querySelector(".repo-list");
 const infoSection = document.querySelector(".repos");
 //individual repo data appears//
 const individualRepo = document.querySelector(".repo-data");
+const button = document.querySelector(".view-repos");
+const filterInput = document.querySelector("filter-repos");
 
 const information = async function() {
     const userInfo = await fetch(`https://api.github.com/users/${username}`);
@@ -71,6 +73,7 @@ languages.push(language);
 console.log(languages);
 }
 displayRepoInfo(repoInfo , languages);
+
 };
 
 const displayRepoInfo = function(repoInfo, languages) {
@@ -82,7 +85,28 @@ const displayRepoInfo = function(repoInfo, languages) {
     <a class="visit" href="${repoInfo.html_url}" target="_blank" rel="noreferrer noopener">View Repo on GitHub!</a>`;
     individualRepo.classList.remove("hide");
     infoSection.classList.add("hide");
+    button.classList.remove("hide");
+    const div = document.createElement("div");
     individualRepo.append(div);
 };
 
+button.addEventListener("click", function() {
+    infoSection.classList.remove("hide");
+    individualRepo.classList.add("hide");
+    button.classList.add("hide");
 
+});
+
+filterInput.addEventListener("input", function(e){
+    const searchText = e.target.value;
+    const repos = document.querySelectorAll(".repo");
+    const lowerText = searchText.toLowerCase();
+
+    for(const repo of repos){
+        const repoLowerText = repo.innerText.toLowerCase();
+        if(repoLowerText.includes (lowerText)) {   
+        } else {
+            repoLowerText.classList.add("hide");
+        }
+    }
+});
